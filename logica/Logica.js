@@ -69,7 +69,7 @@ module.exports = class Logica {
 // datos:{email:Texto, nick:Texto: password:Texto}
 // .................................................................
 	buscarUsuarioPorNick( nick ) {
-		var textoSQL = "select * from Uusuario where nick=$nick;"
+		var textoSQL = "select * from Usuario where nick=$nick;"
 		var valoresParaSQL = { $nick: nick }
 		return new Promise( (resolver, rechazar) => {
 			this.laConexion.all( textoSQL, valoresParaSQL,	(err,res)=> ( err ? rechazar(err) : resolver(res) ))
@@ -83,7 +83,7 @@ module.exports = class Logica {
 // datos:{nick:Texto: password:Texto}
 // .................................................................
 	comprobarPassword( datos ) {
-		var textoSQL = "select password from Uusuario where (nick=$nick) and password=$password;"
+		var textoSQL = "select password from Usuario where (nick=$nick) and password=$password;"
 		var valoresParaSQL = { $nick: datos.nick, $password:datos.password }
 		return new Promise( (resolver, rechazar) => {
 			this.laConexion.all( textoSQL, valoresParaSQL,	(err,res)=> ( err ? rechazar(err) : resolver(res) ))
@@ -96,7 +96,7 @@ module.exports = class Logica {
 // <–
 // .................................................................
 	buscarUsuarioPorEmail( email ) {
-		var textoSQL = "select * from Uusuario where email=$email;"
+		var textoSQL = "select * from Usuario where email=$email;"
 		var valoresParaSQL = { $email: email }
 		return new Promise( (resolver, rechazar) => {
 			this.laConexion.all( textoSQL, valoresParaSQL,

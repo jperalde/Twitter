@@ -40,7 +40,8 @@ module.exports = class Logica {
 // enviarTweet() –> / .................................................................
 	enviarTweet( datos ) {
 		var textoSQL ="insert into Tweet values( $nick,$texto, $instante );"
-		var valoresParaSQL = {$nick:datos.nick, $texto:datos.texto,  $instante:datos.instante }
+		var date=new Date();
+		var valoresParaSQL = {$nick:datos.nick, $texto:datos.texto,  $instante:date}
 		return new Promise( (resolver, rechazar) => {
 			this.laConexion.run( textoSQL, valoresParaSQL, function( err ) {
 				( err ? rechazar(err) : resolver(0) )
@@ -82,7 +83,7 @@ module.exports = class Logica {
 // datos:{nick:Texto: password:Texto}
 // .................................................................
 	comprobarPassword( datos ) {
-		var textoSQL = "select password from Uusuario where (nick=$nick) and password=$password;"
+		var textoSQL = "select password from Usuario where (nick=$nick) and password=$password;"
 		var valoresParaSQL = { $nick: datos.nick, $password:datos.password }
 		return new Promise( (resolver, rechazar) => {
 			this.laConexion.all( textoSQL, valoresParaSQL,	(err,res)=> ( err ? rechazar(err) : resolver(res) ))
