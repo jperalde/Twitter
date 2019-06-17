@@ -1,0 +1,4 @@
+SQL:	COUNT
+	SORT
+--obtiene todos los twwets de a quien sigo
+SELECT*FROM Tweets WHERE nick IN(
