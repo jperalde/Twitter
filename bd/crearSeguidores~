@@ -1,0 +1,8 @@
+--crearTweet
+
+create table Seguidores(
+	nickSeguidor varchar(20) not null,
+	nickSeguidor varchar(20) not null,
+	foreign key (nickSeguidor) references Usuario(nick),
+	foreign key (nickSeguido) references Usuario(nick)
+)

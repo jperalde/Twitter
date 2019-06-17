@@ -1,0 +1,8 @@
+--crearUsuario
+create table Usuario(
+	
+	nick varchar(20) not null,
+	email varchar(80) not null,
+	password varchar (20) not null,
+	primary key (nick)
+);
