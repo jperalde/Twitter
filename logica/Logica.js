@@ -111,7 +111,7 @@ module.exports = class Logica {
 // .................................................................
 	buscarAQuienSigue( nick ) {
 		var textoSQL = "select nickSeguido from Seguidores where nickSeguidor=$nick;"
-		var valoresParaSQL = { $nick: nickSeguidor }
+		var valoresParaSQL = { $nick: nick }
 		return new Promise( (resolver, rechazar) => {
 			this.laConexion.all( textoSQL, valoresParaSQL, 
 				(err,res)=> ( err ? rechazar(err) : resolver(res) ))

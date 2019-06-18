@@ -60,7 +60,7 @@ module.exports.cargar = function( servidorExpress,laLogica ) {
 // supuesto procesamiento
 		try {
 			await laLogica.seguirA(datos)
-			respuesta.send("Siguiendo")
+			respuesta.send("Ya sigues a "+datos.nickSeguido)
 			
 		} catch {
 			respuesta.status(404).send("Error al seguir")

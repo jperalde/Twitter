@@ -136,7 +136,7 @@ module.exports.cargar = function( servidorExpress,laLogica ) {
 		console.log( " * GET /seguidos " )
 		console.log( peticion.params.nick )
 		
-		var nick=  peticion.params.nick
+		var nick= peticion.params.nick
 		try{
 		var res=await laLogica.buscarAQuienSigue(nick)
 		respuesta.send( JSON.stringify( res ) )
