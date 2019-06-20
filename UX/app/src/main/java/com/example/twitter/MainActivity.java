@@ -27,7 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-
+    private String nickLogin;
    // private TextView elTexto;
     private Button elBotonEnviar;
     private ArrayAdapter list_adapter;
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         // (int codigo, String cuerpo) -> { elTexto.setText ("lo que sea"=; }
 
-        String textoJSON = "{ 'dni': '" + "23847618" + "' }";
+       // String textoJSON = "{ 'dni': '" + "23847618" + "' }";
 
 
 
