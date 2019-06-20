@@ -67,9 +67,9 @@ describe( "Test 1 : Recuerda arrancar el servidor", function() {
 //.......................................................................................
 
 	it( "probar POST /seguir", function( hecho ) {
-		var datosUsuarios = { nickSeguidor : "prueba1", nickSeguido : "u1"}
+		var datosUsuarios = { nickSeguidor : "u1", nickSeguido : "prueba1"}
 			request.post({ url : IP_PUERTO+"/seguir",headers : { 'User-Agent' : 'jordi', 'Content-Type' : 'application/json' },
-			body : JSON.stringify( datosUsuario )
+			body : JSON.stringify( datosUsuarios )
 			},
 			function( err, respuesta, carga ) {
 				assert.equal( err, null, "¿ha habido un error?" )
@@ -113,5 +113,19 @@ describe( "Test 1 : Recuerda arrancar el servidor", function() {
 
 
 	})
+	it("probar DELETE/baja/:nick",function (hecho){
+		request.delete({ url : IP_PUERTO+"/baja/prueba1@tweet.com",headers : { 'User-Agent' : 'jordi' }},function( err, respuesta, carga ) {
+				assert.equal( err, null, "¿ha habido un error?" )
+				assert.equal( respuesta.statusCode, 200, "¿El código no es 200 (OK)" )
+			
+				
+				hecho()
+			} // callback
+		) // .get
+
+
+	})
+
+})
 
 
