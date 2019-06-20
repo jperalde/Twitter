@@ -12,24 +12,25 @@
         android:layout_height="wrap_content"
 
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="650dp"
+        android:layout_marginTop="300dp"
         android:text="OK" />
 
     <Button
         android:id="@+id/botoncancelar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="300dp"
-        android:layout_marginTop="650dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="300dp"
         android:onClick="botonIntent"
         android:text="CANCELAR" />
+
 
     <EditText
         android:id="@+id/nick"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="NICK" />
@@ -39,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="100dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="EMAIL" />
@@ -49,9 +50,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="200dp"
         android:ems="10"
         android:inputType="textPassword"
         android:text="PASSWORD" />
-
 </RelativeLayout>

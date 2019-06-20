@@ -13,9 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class login extends AppCompatActivity {
-    public static final String value1 = "com.example.twitter.extra.MESSAGE";
-    public static final int TEXT_REQUEST = 1;
-
 
 
     @Override
@@ -61,8 +58,8 @@ public class login extends AppCompatActivity {
                     @Override
                     public void callback(int codigo, String cuerpo) {
 
-                        if (codigo==0){
-                            Intent i= new Intent(login.this,MainActivity.class);
+                        if (codigo!=404){
+                            Intent i= new Intent(login.this,tablon.class);
                             i.putExtra("Nick", nick);
                             startActivity(i);
                         }
