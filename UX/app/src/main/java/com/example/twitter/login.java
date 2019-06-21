@@ -12,6 +12,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.widget.Toast.LENGTH_LONG;
+
 public class login extends AppCompatActivity {
 
 
@@ -30,67 +32,30 @@ public class login extends AppCompatActivity {
     }
 
     public void botoncomprobar(View btn){
-        Log.d("clienterestandroid", "boton_enviar_pulsado");
+        Log.d("jorge", "boton_enviar_pulsado");
         //this.elTexto.setText("pulsado");
-
-        // ojo: creo que hay que crear uno nuevo cada vez
-        PeticionarioREST elPeticionario = new PeticionarioREST();
-
 
         EditText nickTXT=findViewById(R.id.nick);
         EditText passwordTXT=findViewById(R.id.password);
 
         final String nick= nickTXT.getText().toString();
         String password= passwordTXT.getText().toString();
-		/*
 
-		   enviarPeticion( "hola", function (res) {
-		   		res
-		   })
+        String[] code= MainActivity.laLogicaFake.comprobarPassword(nick, password);
+        Log.d("jorge", "Llamado metodo laLogicaFake.comprobarPassword() desde LOGIN");
 
-        elPeticionario.hacerPeticionREST("GET",  "http://158.42.144.126:8080/prueba", null,
-			(int codigo, String cuerpo) => { } );
+        if(code[0].equals("200")) {
+            Log.d("jorge", "Llamado metodo laLogicaFake.comprobarPassword() desde LOGIN Intent a TABLON");
+            Intent i = new Intent(login.this, tablon.class);
+            i.putExtra("Nick", nick);
+            startActivity(i);
+            Log.d("jorge", "Comenzada actividad TABLON");
 
-		   */
-
-        elPeticionario.hacerPeticionREST("GET",  "http://192.168.43.111:8080/comprobar/"+nick+"&"+password, null,
-                new PeticionarioREST.RespuestaREST () {
-                    @Override
-                    public void callback(int codigo, String cuerpo) {
-
-                        if (codigo!=404){
-                            Intent i= new Intent(login.this,tablon.class);
-                            i.putExtra("Nick", nick);
-                            startActivity(i);
-                        }
-                        Toast.makeText(login.this, "ERROR", Toast.LENGTH_LONG);
-                        //elTexto.setText ("codigo respuesta= " + codigo + " <-> \n" + cuerpo);
-                    }
-                }
-        );
-
-        // (int codigo, String cuerpo) -> { elTexto.setText ("lo que sea"=; }
-
-        // String textoJSON = "{ 'dni': '" + "23847618" + "' }";
-
-
-
-        /*
-
-
-		/* otro ejemplo:
-		elPeticionario.hacerPeticionREST("POST", "http://192.168.1.113:8080/mensaje",
-				"{\"dni\": \"A9182342W\", \"nombre\": \"Android\", \"apellidos\": \"De Los Palotes\"}",
-				new PeticionarioREST.RespuestaREST () {
-					@Override
-					public void callback(int codigo, String cuerpo) {
-						elTexto.setText ("cÂ—digo respuesta: " + codigo + " <-> \n" + cuerpo);
-					}
-		});
-		*/
-
-
-        //  elPeticionario.hacerPeticionREST("GET",  "https://jsonplaceholder.typicode.com/posts/2", ...
+        }//if
+        else{
+            Log.d("jorge", "ERROR en metodo laLogicaFake.comprobarPassword() desde LOGIN");
+            Toast.makeText(login.this,"ERROR" ,LENGTH_LONG ).show();
+        }
     }//
 }
 

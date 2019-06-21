@@ -35,6 +35,15 @@ public class miCuenta extends AppCompatActivity {
 
 
 
+        MainActivity.laLogicaFake.tweetsPorNick("pepe", new LogicaFake.RespuestaLogica () {
+
+            @Override
+            public void callback(JSONArray respuesta) {
+                //
+            }
+        });
+
+
 
 		/*
 
@@ -47,7 +56,7 @@ public class miCuenta extends AppCompatActivity {
 
 		   */
 
-        elPeticionario.hacerPeticionREST("GET",  "http://192.168.43.111:8080/tweetsnick/"+nickLogin+"&20", null,
+        elPeticionario.hacerPeticionREST("GET",  "http://10.236.21.86:8080/tweetsnick/"+nickLogin+"&20", null,
                 new PeticionarioREST.RespuestaREST () {
                     @Override
                     public void callback(int codigo, String cuerpo) {
@@ -56,6 +65,8 @@ public class miCuenta extends AppCompatActivity {
                         int year, month, day, hour, min, seg;
                         String nick=null, text=null, date=null,aux=null;
                         Long inst;
+
+
 
                         try{
                             tws=(JSONArray)new JSONTokener(cuerpo).nextValue();

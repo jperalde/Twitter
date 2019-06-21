@@ -45,7 +45,7 @@ public class baja extends AppCompatActivity {
         password = passwordTXT.getText().toString();
         if (nick.equals(nickLogin)) {
             String cuerpo = "{\"nick\": \"" + nick + "\",\"password\": \"" + password + "\"}";
-            elPeticionario.hacerPeticionREST("DELETE", "http://192.168.43.111:8080/baja", cuerpo,
+            elPeticionario.hacerPeticionREST("DELETE", "http://10.236.21.86:8080/baja", cuerpo,
                     new PeticionarioREST.RespuestaREST() {
                         @Override
                         public void callback(int codigo, String cuerpo) {

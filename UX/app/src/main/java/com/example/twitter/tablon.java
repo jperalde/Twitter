@@ -48,92 +48,10 @@ public class tablon extends AppCompatActivity {
 
     public void boton_enviar_pulsado (View quien) {
         Log.d("clienterestandroid", "boton_enviar_pulsado");
-        //this.elTexto.setText("pulsado");
-
-        // ojo: creo que hay que crear uno nuevo cada vez
-        PeticionarioREST elPeticionario = new PeticionarioREST();
-
-		/*
-
-		   enviarPeticion( "hola", function (res) {
-		   		res
-		   })
-
-        elPeticionario.hacerPeticionREST("GET",  "http://158.42.144.126:8080/prueba", null,
-			(int codigo, String cuerpo) => { } );
-
-		   */
-
-        elPeticionario.hacerPeticionREST("GET",  "http://192.168.43.111:8080/tweetsseguidos/"+nickLogin+"&20", null,
-                new PeticionarioREST.RespuestaREST () {
-                    @Override
-                    public void callback(int codigo, String cuerpo) {
-                        JSONArray tws;
-
-                        int year, month, day, hour, min, seg;
-                        String nick=null, text=null, date=null,aux=null;
-                        Long inst;
-
-                        try{
-                            tws=(JSONArray)new JSONTokener(cuerpo).nextValue();
-                            list_adapter.clear();
-                            for(int i=0;i<tws.length();i++){
-                                //extraer datos al json
-                                nick=tws.getJSONObject(i).getString("nick");
-                                text=tws.getJSONObject(i).getString("texto");
-                                inst=tws.getJSONObject(i).getLong("instante");
-
-                                //conversion del instante a fecha
-
-                                Date date1= new Date(inst);
-                                Calendar calendar=Calendar.getInstance();
-                                calendar.setTime(date1);
-                                //obtener fecha en calendario segun el instante
-                                year=calendar.get(Calendar.YEAR);
-                                month=calendar.get(Calendar.MONTH);
-                                day=calendar.get(Calendar.DAY_OF_MONTH);
-                                hour=calendar.get(Calendar.HOUR_OF_DAY);
-                                min=calendar.get(Calendar.MINUTE);
-                                seg=calendar.get(Calendar.SECOND);
-
-                                date=" "+day+"/"+(month+1)+"/"+year+"   "+hour+":"+min+":"+seg;
-
-                                aux ="@"+nick+": "+text+"     "+date;
-
-                                list_adapter.add(aux);//Añadir el tweet a la lista
-                            }//for
-
-                        } catch(JSONException ex){
-
-                        }
-                        //elTexto.setText ("codigo respuesta= " + codigo + " <-> \n" + cuerpo);
-                    }
-                }
-        );
-
-        // (int codigo, String cuerpo) -> { elTexto.setText ("lo que sea"=; }
-
-        // String textoJSON = "{ 'dni': '" + "23847618" + "' }";
-
-
-
-        /*
-
-
-		/* otro ejemplo:
-		elPeticionario.hacerPeticionREST("POST", "http://192.168.1.113:8080/mensaje",
-				"{\"dni\": \"A9182342W\", \"nombre\": \"Android\", \"apellidos\": \"De Los Palotes\"}",
-				new PeticionarioREST.RespuestaREST () {
-					@Override
-					public void callback(int codigo, String cuerpo) {
-						elTexto.setText ("cÂ—digo respuesta: " + codigo + " <-> \n" + cuerpo);
-					}
-		});
-		*/
-
-
-        //  elPeticionario.hacerPeticionREST("GET",  "https://jsonplaceholder.typicode.com/posts/2", ...
-
+        list_adapter.clear();
+        String tweet=MainActivity.laLogicaFake.tweetsSeguidos(nickLogin)[0];
+        list_adapter.add(tweet);//Añadir el tweet a la lista
+        configInter();
     } // pulsado ()
 
     public void btncuenta(View view) {
@@ -143,29 +61,27 @@ public class tablon extends AppCompatActivity {
     }
 
     public void btntweet(View view) {
-        PeticionarioREST elPeticionario = new PeticionarioREST();
+        Log.d("jorge", "Boton btntweet pulsado");
 
-        String nick=null, email=null, password=null;
 
         EditText tweetTXT=findViewById(R.id.tweet);
-
 
         String tweet = tweetTXT.getText().toString();
 
         String cuerpo="{\"nick\": \"" + nickLogin + "\", \"texto\": \""+tweet+"\"}";
-        elPeticionario.hacerPeticionREST("POST",  "http://192.168.43.111:8080/tweet", cuerpo,
-                new PeticionarioREST.RespuestaREST () {
-                    @Override
-                    public void callback(int codigo, String cuerpo) {
-                        if (codigo == 404) {
-                            Toast.makeText(tablon.this,"ERROR" ,Toast.LENGTH_LONG );
-                        }
-                        Toast.makeText(tablon.this,"Creado usuario.Todo OK" ,Toast.LENGTH_LONG );
 
+        String codigoR=MainActivity.laLogicaFake.enviarTweet(cuerpo)[0];
+        Log.d("jorge", "empieza LogicaFake.enviarTweet()");
 
-                        //elTexto.setText ("codigo respuesta= " + codigo + " <-> \n" + cuerpo);
-                    }
-                }
-        );
+        if(codigoR.equals("200")) {
+
+            Toast.makeText(tablon.this, "Enviado", Toast.LENGTH_LONG).show();
+
+        }
+        else{
+
+            Toast.makeText(tablon.this, "ERROR", Toast.LENGTH_LONG).show();
+
+        }
     }
 }
