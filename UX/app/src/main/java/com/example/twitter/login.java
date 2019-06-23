@@ -41,21 +41,24 @@ public class login extends AppCompatActivity {
         final String nick= nickTXT.getText().toString();
         String password= passwordTXT.getText().toString();
 
-        String[] code= MainActivity.laLogicaFake.comprobarPassword(nick, password);
-        Log.d("jorge", "Llamado metodo laLogicaFake.comprobarPassword() desde LOGIN");
+        MainActivity.laLogicaFake.comprobarPassword(nick, password, new LogicaFake.RespuestaLogica() {
+            @Override
+            public void callback(String cuerpo) {
+                Log.d("jorge", "Llamado metodo laLogicaFake.comprobarPassword() desde LOGIN Intent a TABLON");
+                Intent i = new Intent(login.this, tablon.class);
+                i.putExtra("Nick", nick);
+                startActivity(i);
+                Log.d("jorge", "Comenzada actividad TABLON");
 
-        if(code[0].equals("200")) {
-            Log.d("jorge", "Llamado metodo laLogicaFake.comprobarPassword() desde LOGIN Intent a TABLON");
-            Intent i = new Intent(login.this, tablon.class);
-            i.putExtra("Nick", nick);
-            startActivity(i);
-            Log.d("jorge", "Comenzada actividad TABLON");
+            }
 
-        }//if
-        else{
-            Log.d("jorge", "ERROR en metodo laLogicaFake.comprobarPassword() desde LOGIN");
-            Toast.makeText(login.this,"ERROR" ,LENGTH_LONG ).show();
-        }
+            @Override
+            public void fallo(int codigo) {
+                Log.d("jorge", "ERROR en metodo laLogicaFake.comprobarPassword() desde LOGIN");
+                Toast.makeText(login.this,"ERROR" ,LENGTH_LONG ).show();
+            }
+        });
+
     }//
 }
 

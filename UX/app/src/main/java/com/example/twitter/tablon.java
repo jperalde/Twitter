@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.util.Calendar;
@@ -49,8 +50,60 @@ public class tablon extends AppCompatActivity {
     public void boton_enviar_pulsado (View quien) {
         Log.d("clienterestandroid", "boton_enviar_pulsado");
         list_adapter.clear();
-        String tweet=MainActivity.laLogicaFake.tweetsSeguidos(nickLogin)[0];
-        list_adapter.add(tweet);//Añadir el tweet a la lista
+        MainActivity.laLogicaFake.tweetsSeguidos(nickLogin,new LogicaFake.RespuestaLogica(){
+            @Override
+            public void callback(String cuerpo) {
+                int year;
+                int month;
+                int day;
+                int hour;
+                int min;
+                int seg;
+                String nick = null;
+                String text = null;
+                String date = null;
+                String aux = null;
+                Long inst;
+                JSONArray tws;
+                try {
+                    tws = (JSONArray) new JSONTokener(cuerpo).nextValue();
+                    for (int i = 0; i < tws.length(); i++) {
+                        //extraer datos al json
+                        nick = tws.getJSONObject(i).getString("nick");
+                        text = tws.getJSONObject(i).getString("texto");
+                        inst = tws.getJSONObject(i).getLong("instante");
+
+                        //conversion del instante a fecha
+
+                        Date date1 = new Date(inst);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date1);
+                        //obtener fecha en calendario segun el instante
+                        year = calendar.get(Calendar.YEAR);
+                        month = calendar.get(Calendar.MONTH);
+                        day = calendar.get(Calendar.DAY_OF_MONTH);
+                        hour = calendar.get(Calendar.HOUR_OF_DAY);
+                        min = calendar.get(Calendar.MINUTE);
+                        seg = calendar.get(Calendar.SECOND);
+
+                        date = " " + day + "/" + (month + 1) + "/" + year + "   " + hour + ":" + min + ":" + seg;
+
+                        aux = "@" + nick + ": " + text + "     " + date;
+                        list_adapter.add(aux);//Añadir el tweet a la lista
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void fallo(int codigo) {
+                Toast.makeText(tablon.this, "Enviado", Toast.LENGTH_LONG).show();
+
+            }
+        });
+       // list_adapter.add(tweet);//Añadir el tweet a la lista
         configInter();
     } // pulsado ()
 
@@ -69,19 +122,23 @@ public class tablon extends AppCompatActivity {
         String tweet = tweetTXT.getText().toString();
 
         String cuerpo="{\"nick\": \"" + nickLogin + "\", \"texto\": \""+tweet+"\"}";
-
-        String codigoR=MainActivity.laLogicaFake.enviarTweet(cuerpo)[0];
         Log.d("jorge", "empieza LogicaFake.enviarTweet()");
+        MainActivity.laLogicaFake.enviarTweet(cuerpo, new LogicaFake.RespuestaLogica() {
+            @Override
+            public void callback(String cuerpo) {
+                Toast.makeText(tablon.this, "Enviado", Toast.LENGTH_LONG).show();
+                Log.d("jorge", "Acabada LogicaFake.enviarTweet()"+cuerpo);
 
-        if(codigoR.equals("200")) {
+            }
 
-            Toast.makeText(tablon.this, "Enviado", Toast.LENGTH_LONG).show();
+            @Override
+            public void fallo(int codigo) {
+                Toast.makeText(tablon.this, "ERROR", Toast.LENGTH_LONG).show();
+                Log.d("jorge", "Acabada LogicaFake.enviarTweet()"+codigo);
 
-        }
-        else{
+            }
+        });
 
-            Toast.makeText(tablon.this, "ERROR", Toast.LENGTH_LONG).show();
 
-        }
     }
 }

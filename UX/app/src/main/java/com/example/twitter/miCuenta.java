@@ -35,7 +35,7 @@ public class miCuenta extends AppCompatActivity {
 
 
 
-        MainActivity.laLogicaFake.tweetsPorNick("pepe", new LogicaFake.RespuestaLogica () {
+        /*MainActivity.laLogicaFake.tweetsPorNick("pepe", new LogicaFake.RespuestaLogica () {
 
             @Override
             public void callback(JSONArray respuesta) {

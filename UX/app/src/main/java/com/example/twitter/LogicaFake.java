@@ -12,7 +12,8 @@ import java.util.Date;
 public class LogicaFake {
 
     public interface RespuestaLogica {
-        void callback (JSONArray respuesta);
+        void callback (String cuerpo);
+        void fallo(int codigo);
     }
 
 
@@ -26,9 +27,9 @@ public class LogicaFake {
 
 
     // ----------------------------------------------------------------------------
-    // nick:Texto,  -> altaUsuario () -> [Tweets?]
+    // nick:Texto,  -> tweetsPorNick () -> [Tweets?]
     // ----------------------------------------------------------------------------
-    public void tweetsPorNick( String nick, final RespuestaLogica responder ){
+    public void tweetsPorNick( String nick, final RespuestaLogica respuestaLogica ){
         Log.d( "jorge", "empieza LogicaFake.altaUsuario()");
 
         // ojo: creo que hay que crear uno nuevo cada vez
@@ -42,17 +43,11 @@ public class LogicaFake {
 
                         Log.d( "jorge", "LogicaFake.altaUsuario(): respuesta rest codigo=" + codigo);
 
-                        JSONArray tws;
-
-
-
-                        try {
-                            tws = (JSONArray) new JSONTokener(cuerpo).nextValue();
-
-                            responder.callback(tws);
-
-                        } catch(JSONException ex){
-
+                        if (codigo==404){
+                            respuestaLogica.fallo(codigo);
+                        }
+                        else {
+                            respuestaLogica.callback(cuerpo);
                         }
 
 
@@ -64,62 +59,38 @@ public class LogicaFake {
 
     } // ()
 
-    public String[] tweetsSeguidos(String nickLogin) {
+    // ----------------------------------------------------------------------------
+    // nickLogin:Texto,  -> tweetsSeguidos () -> [Tweets?]
+    // ----------------------------------------------------------------------------
+
+    public void tweetsSeguidos(String nickLogin, final RespuestaLogica respuestaLogica) {
         Log.d("jorge", "empieza LogicaFake.altaUsuario()");
-        final String[] aux = new String[1];
+
         PeticionarioREST elPeticionario = new PeticionarioREST();
         elPeticionario.hacerPeticionREST("GET",  this.urlServidor+"/tweetsseguidos/"+nickLogin+"&20", null,
                 new PeticionarioREST.RespuestaREST () {
                     @Override
                     public void callback(int codigo, String cuerpo) {
-                        JSONArray tws;
-
-                        int year, month, day, hour, min, seg;
-                        String nick=null, text=null, date=null;
-                        Long inst;
-
-                        try{
-                            tws=(JSONArray)new JSONTokener(cuerpo).nextValue();
-                            for(int i=0;i<tws.length();i++){
-                                //extraer datos al json
-                                nick=tws.getJSONObject(i).getString("nick");
-                                text=tws.getJSONObject(i).getString("texto");
-                                inst=tws.getJSONObject(i).getLong("instante");
-
-                                //conversion del instante a fecha
-
-                                Date date1= new Date(inst);
-                                Calendar calendar=Calendar.getInstance();
-                                calendar.setTime(date1);
-                                //obtener fecha en calendario segun el instante
-                                year=calendar.get(Calendar.YEAR);
-                                month=calendar.get(Calendar.MONTH);
-                                day=calendar.get(Calendar.DAY_OF_MONTH);
-                                hour=calendar.get(Calendar.HOUR_OF_DAY);
-                                min=calendar.get(Calendar.MINUTE);
-                                seg=calendar.get(Calendar.SECOND);
-
-                                date=" "+day+"/"+(month+1)+"/"+year+"   "+hour+":"+min+":"+seg;
-
-                                aux[0] ="@"+nick+": "+text+"     "+date;
-                            }//for
-
-                        } catch(JSONException ex){
-
+                        if (codigo==404){
+                            respuestaLogica.fallo(codigo);
+                        }
+                        else {
+                            respuestaLogica.callback(cuerpo);
                         }
                     }
                 }
         );
-        return aux;
+
     }
 
 
+    // ----------------------------------------------------------------------------
+    // cuerpo:Texto,  -> enviarTweet () -> OK
+    // ----------------------------------------------------------------------------
 
 
-
-    public String[] enviarTweet(String cuerpo) {
+    public void enviarTweet(String cuerpo, final RespuestaLogica respuestaLogica) {
         Log.d("jorge", "empieza LogicaFake.altaUsuario()");
-        final String[] codigoR = new String[1];
         // ojo: creo que hay que crear uno nuevo cada vez
         PeticionarioREST elPeticionario = new PeticionarioREST();
 
@@ -128,24 +99,22 @@ public class LogicaFake {
                     @Override
                     public void callback(int codigo, String cuerpo) {
                         if (codigo == 404) {
-                            codigoR[0]="404";
+                            respuestaLogica.fallo(codigo);
                         }
                         else{
-                            codigoR[0]="200";
+                            respuestaLogica.callback(null);
                         }
 
                     }
                 }
         );
-        return codigoR;
     }//enviarTweet
     // ----------------------------------------------------------------------------
-    // nick:Texto,  pasword:Text -> comprobarPassword () -> String[]
+    // nick:Texto,  password:Text -> comprobarPassword () -> String[]
     // ----------------------------------------------------------------------------
 
-    public String[] comprobarPassword(final String nick, String password ){
+    public void comprobarPassword(final String nick, String password , final RespuestaLogica respuestaLogica){
 
-        final String[] codigoR = new String[1];
         PeticionarioREST elPeticionario = new PeticionarioREST();
         elPeticionario.hacerPeticionREST("GET",  this.urlServidor+"/comprobar/"+nick+"&"+password, null,
                 new PeticionarioREST.RespuestaREST () {
@@ -154,14 +123,15 @@ public class LogicaFake {
 
                         if (codigo!=404){
 
-                            codigoR[0] ="200";
+                           respuestaLogica.callback(null);
                         }
-                        codigoR[0]="404";
+                        else {
+                            respuestaLogica.fallo(codigo);
 
+                        }
                     }
                 }
         );
-        return codigoR;
     }
 
 
@@ -169,7 +139,7 @@ public class LogicaFake {
     // ----------------------------------------------------------------------------
     // nick:Texto, email:Texto, pasword:Text -> altaUsuario () -> ?
     // ----------------------------------------------------------------------------
-    public void altaUsuario( String nick, String email, String password ){
+    public void altaUsuario( String nick, String email, String password , final RespuestaLogica respuestaLogica){
         Log.d( "jorge", "empieza LogicaFake.altaUsuario()");
 
         // ojo: creo que hay que crear uno nuevo cada vez
