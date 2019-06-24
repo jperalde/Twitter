@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -19,56 +18,43 @@ import org.json.JSONTokener;
 import java.util.Calendar;
 import java.util.Date;
 
-public class miCuenta extends AppCompatActivity {
+public class buscarUsuario extends AppCompatActivity {
     private String nickLogin;
-    // private TextView elTexto;
-    private Button elBotonEnviar;
-    private ArrayAdapter list_adapter;
 
+    private ArrayAdapter list_adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mi_cuenta);
-
+        setContentView(R.layout.activity_buscar_usuario);
         Intent log= getIntent();
         nickLogin=log.getExtras().getString("Nick");
+
+        Log.d("clienterestandroid", "fin onCreate()");
+
         configInter();
-        Log.d("jorge", nickLogin);
-
     }
-
     private void configInter() {
-        ListView lv=findViewById(R.id.lv);
-        this.list_adapter=new ArrayAdapter(miCuenta.this, R.layout.fila_layout,R.id.textfila);
+        ListView lv=(ListView)findViewById(R.id.lv);
+        this.list_adapter=new ArrayAdapter(this, R.layout.fila_layout,R.id.textfila);
         lv.setAdapter(this.list_adapter);
     }
 
-
-
-    public void btnVolver(View view) {
-        setResult(RESULT_CANCELED);
-        finish();
-
-    }
-
-    public void btnBaja(View view) {
-        Intent myIntent = new Intent(this, baja.class);
-        myIntent.putExtra("Nick", nickLogin);
-        this.startActivity(myIntent);
-    }
-    public void btncargar (View quien) {
+    public void boton_enviar_pulsado(View view) {
         Log.d("jorge", "btncargar");
         list_adapter.clear();
-        MainActivity.laLogicaFake.tweetsPorNick(nickLogin, new LogicaFake.RespuestaLogica() {
+        EditText nickSearchTXT =findViewById(R.id.ux);
+        String nickSearch =nickSearchTXT.getText().toString();
+        MainActivity.laLogicaFake.tweetsPorNick(nickSearch, new LogicaFake.RespuestaLogica() {
             @Override
             public void callback(String cuerpo) {
+
                 int year;
                 int month;
                 int day;
                 int hour;
                 int min;
                 int seg;
-                String nick=null;
+                String nick = null;
                 String text = null;
                 String date = null;
                 String aux = null;
@@ -78,8 +64,7 @@ public class miCuenta extends AppCompatActivity {
                     tws = (JSONArray) new JSONTokener(cuerpo).nextValue();
                     for (int i = 0; i < tws.length(); i++) {
                         //extraer datos al json
-                        nick = tws.getJSONObject(i).getString("nick");
-
+                        nick=tws.getJSONObject(i).getString("nick");
                         text = tws.getJSONObject(i).getString("texto");
                         inst = tws.getJSONObject(i).getLong("instante");
 
@@ -114,9 +99,28 @@ public class miCuenta extends AppCompatActivity {
 
     }
 
-    public void btnBuscar(View view) {
-        Intent myIntent = new Intent(this, buscarUsuario.class);
-        myIntent.putExtra("Nick", nickLogin);
-        this.startActivity(myIntent);
+    public void btnSeguir(View view) {
+        EditText nickSearchTXT =findViewById(R.id.ux);
+        final String nickSearch =nickSearchTXT.getText().toString();
+
+        MainActivity.laLogicaFake.seguirUsuario(nickLogin, nickSearch, new LogicaFake.RespuestaLogica() {
+                @Override
+                public void callback(String cuerpo) {
+                    Toast.makeText(buscarUsuario.this, "Has Seguido a "+nickSearch, Toast.LENGTH_LONG).show();
+                    Button btn = findViewById(R.id.btnSeg);
+                    btn.setEnabled(false);
+
+                }
+
+                @Override
+                public void fallo(int codigo) {
+                    Button btn = findViewById(R.id.btnSeg);
+                    btn.setEnabled(false);
+                    Toast.makeText(buscarUsuario.this, "Ya Sigues a este usuario", Toast.LENGTH_LONG).show();
+                }
+            });
     }
+
 }
+
+

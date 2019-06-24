@@ -8,35 +8,25 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 public class baja extends AppCompatActivity {
     private String nickLogin;
-    // private TextView elTexto;
-    private Button elBotonEnviar;
-    private ArrayAdapter list_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baja);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.logo);
         Intent log= getIntent();
         nickLogin=log.getExtras().getString("Nick");
     }
 
     public void btnRealizarBaja(View view) {
-        PeticionarioREST elPeticionario = new PeticionarioREST();
 
-		/*
-
-		   enviarPeticion( "hola", function (res) {
-		   		res
-		   })
-
-        elPeticionario.hacerPeticionREST("GET",  "http://158.42.144.126:8080/prueba", null,
-			(int codigo, String cuerpo) => { } );
-
-		   */
-        String nick = null, email = null, password = null;
+        String nick = null;
+        String password = null;
 
         final EditText nickTXT = findViewById(R.id.nick);
         EditText passwordTXT = findViewById(R.id.password);
@@ -44,26 +34,35 @@ public class baja extends AppCompatActivity {
         nick = nickTXT.getText().toString();
         password = passwordTXT.getText().toString();
         if (nick.equals(nickLogin)) {
-            String cuerpo = "{\"nick\": \"" + nick + "\",\"password\": \"" + password + "\"}";
-            elPeticionario.hacerPeticionREST("DELETE", "http://10.236.21.86:8080/baja", cuerpo,
-                    new PeticionarioREST.RespuestaREST() {
+            MainActivity.laLogicaFake.comprobarPassword(nickLogin, password, new LogicaFake.RespuestaLogica() {
+                @Override
+                public void callback(String cuerpo) {
+                    MainActivity.laLogicaFake.baja(nickLogin, new LogicaFake.RespuestaLogica() {
                         @Override
-                        public void callback(int codigo, String cuerpo) {
-                            if (codigo == 404) {
-                                Toast.makeText(baja.this, "ERROR", Toast.LENGTH_LONG);
-                            }
-                            Toast.makeText(baja.this, "Baja Realizada", Toast.LENGTH_LONG);
+                        public void callback(String cuerpo) {
+                            Toast.makeText(baja.this, "Baja Realizada", Toast.LENGTH_LONG).show();
                             Intent myIntent = new Intent(baja.this, login.class);
                             startActivity(myIntent);
-
-
-                            //elTexto.setText ("codigo respuesta= " + codigo + " <-> \n" + cuerpo);
                         }
-                    }
-            );
 
-        }//if
+                        @Override
+                        public void fallo(int codigo) {
+                            Toast.makeText(baja.this, "ERROR baja", Toast.LENGTH_LONG);
+
+                        }
+                    });
+                }
+
+                @Override
+                public void fallo(int codigo) {
+                    Toast.makeText(baja.this, "ERROR contraseña erronea", Toast.LENGTH_LONG);
+
+                }
+            });
+        }
     }
+
+
 
 
     public void botonIntent(View view) {

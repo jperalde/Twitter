@@ -29,45 +29,110 @@ public class LogicaFake {
     // ----------------------------------------------------------------------------
     // nick:Texto,  -> tweetsPorNick () -> [Tweets?]
     // ----------------------------------------------------------------------------
-    public void tweetsPorNick( String nick, final RespuestaLogica respuestaLogica ){
-        Log.d( "jorge", "empieza LogicaFake.altaUsuario()");
+    public void tweetsPorNick(String nickLogin, final RespuestaLogica respuestaLogica) {
+        Log.d("jorge", "empieza LogicaFake.tweetsPorNick()");
 
-        // ojo: creo que hay que crear uno nuevo cada vez
         PeticionarioREST elPeticionario = new PeticionarioREST();
-
-        String cuerpo="";
-        elPeticionario.hacerPeticionREST("POST",  this.urlServidor + "/alta", cuerpo,
+        elPeticionario.hacerPeticionREST("GET",  this.urlServidor+"/tweetsnick/" + nickLogin+"&100", null,
                 new PeticionarioREST.RespuestaREST () {
                     @Override
                     public void callback(int codigo, String cuerpo) {
-
-                        Log.d( "jorge", "LogicaFake.altaUsuario(): respuesta rest codigo=" + codigo);
-
                         if (codigo==404){
                             respuestaLogica.fallo(codigo);
                         }
                         else {
                             respuestaLogica.callback(cuerpo);
                         }
-
-
-
                     }
-
                 }
         );
 
-    } // ()
+    }
+    // ----------------------------------------------------------------------------
+    // nick:Texto  -> baja()
+    // ----------------------------------------------------------------------------
+
+    public void baja(String nick,  final RespuestaLogica respuestaLogica) {
+        Log.d("jorge", "empieza LogicaFake.tweetsPorNick()");
+
+        PeticionarioREST elPeticionario = new PeticionarioREST();
+        elPeticionario.hacerPeticionREST("DELETE",  this.urlServidor+"/baja/"+nick , null,
+                new PeticionarioREST.RespuestaREST () {
+                    @Override
+                    public void callback(int codigo, String cuerpo) {
+                        if (codigo==404){
+                            respuestaLogica.fallo(codigo);
+                        }
+                        else {
+                            respuestaLogica.callback(cuerpo);
+                        }
+                    }
+                }
+        );
+
+    }
+
+    // ----------------------------------------------------------------------------
+    // nick:Texto, email:Texto, pasword:Text -> altaUsuario () -> ?
+    // ----------------------------------------------------------------------------
+
+    public void buscarNick( String nick,  final RespuestaLogica respuestaLogica){
+        Log.d("jorge", "empieza LogicaFake.tweetsPorNick()");
+
+        PeticionarioREST elPeticionario = new PeticionarioREST();
+        elPeticionario.hacerPeticionREST("GET",  this.urlServidor+"/searchnick/" + nick, null,
+                new PeticionarioREST.RespuestaREST () {
+                    @Override
+                    public void callback(int codigo, String cuerpo) {
+                        if (codigo==404){
+                            respuestaLogica.fallo(codigo);
+                        }
+                        else {
+                            respuestaLogica.callback(cuerpo);
+                        }
+                    }
+                }
+        );
+
+    }
+
+    // ----------------------------------------------------------------------------
+    // nick:Texto, email:Texto, pasword:Text -> altaUsuario () -> ?
+    // ----------------------------------------------------------------------------
+
+    public void seguidos(String nick,  final RespuestaLogica respuestaLogica){
+        Log.d("jorge", "empieza LogicaFake.tweetsPorNick()");
+
+        PeticionarioREST elPeticionario = new PeticionarioREST();
+        elPeticionario.hacerPeticionREST("GET",  this.urlServidor+"/seguidos/" + nick, null,
+                new PeticionarioREST.RespuestaREST () {
+                    @Override
+                    public void callback(int codigo, String cuerpo) {
+                        if (codigo==404){
+                            respuestaLogica.fallo(codigo);
+                        }
+                        else {
+                            respuestaLogica.callback(cuerpo);
+                        }
+                    }
+                }
+        );
+
+    }
+
+
+
+
 
     // ----------------------------------------------------------------------------
     // nickLogin:Texto,  -> tweetsSeguidos () -> [Tweets?]
     // ----------------------------------------------------------------------------
 
     public void tweetsSeguidos(String nickLogin, final RespuestaLogica respuestaLogica) {
-        Log.d("jorge", "empieza LogicaFake.altaUsuario()");
+        Log.d("jorge", "empieza LogicaFake.tweetsSeguidos()");
 
         PeticionarioREST elPeticionario = new PeticionarioREST();
-        elPeticionario.hacerPeticionREST("GET",  this.urlServidor+"/tweetsseguidos/"+nickLogin+"&20", null,
+        elPeticionario.hacerPeticionREST("GET",  this.urlServidor+"/tweetsseguidos/"+nickLogin+"&100", null,
                 new PeticionarioREST.RespuestaREST () {
                     @Override
                     public void callback(int codigo, String cuerpo) {
@@ -78,8 +143,7 @@ public class LogicaFake {
                             respuestaLogica.callback(cuerpo);
                         }
                     }
-                }
-        );
+                });
 
     }
 
@@ -164,4 +228,38 @@ public class LogicaFake {
         );
 
     } // ()
+
+    // ----------------------------------------------------------------------------
+    // nick:Texto, email:Texto, pasword:Text -> altaUsuario () -> ?
+    // ----------------------------------------------------------------------------
+
+    public void seguirUsuario( String nick, String nickSeguido, final RespuestaLogica respuestaLogica){
+        Log.d( "jorge", "empieza LogicaFake.altaUsuario()");
+
+        // ojo: creo que hay que crear uno nuevo cada vez
+        PeticionarioREST elPeticionario = new PeticionarioREST();
+
+        String cuerpo="{\"nickSeguidor\": \"" + nick + "\", \"nickSeguido\": \""+nickSeguido+"\"}";
+        elPeticionario.hacerPeticionREST("POST",  this.urlServidor + "/seguir", cuerpo,
+                new PeticionarioREST.RespuestaREST () {
+                    @Override
+                    public void callback(int codigo, String cuerpo) {
+
+                        Log.d( "jorge", "LogicaFake.altaUsuario(): respuesta rest codigo=" + codigo);
+
+                        if (codigo == 404) {
+                            Log.d( "jorge", "LogicaFake.altaUsuario(): respuesta rest 404");
+
+
+                        }
+                        //Toast.makeText(otra.this,"Creado usuario.Todo OK" ,Toast.LENGTH_LONG );
+                    }
+                }
+        );
+
+    } // ()
+
+
+
+   // public void bajaUsuario()
 } // class

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".buscarUsuario">
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="wrap_content"
+        android:layout_height="491dp"
+        android:layout_marginTop="200dp" />
+
+
+    <Button
+        android:id="@+id/botonEnviar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+
+        android:onClick="boton_enviar_pulsado"
+        android:text="Cargar Tweets" />
+    <Button
+        android:id="@+id/btnSeg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="120dp"
+
+        android:onClick="btnSeguir"
+        android:clickable="true"
+        android:text="Seguir" />
+    <EditText
+        android:id="@+id/ux"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:text="Usuario" />
+</RelativeLayout>

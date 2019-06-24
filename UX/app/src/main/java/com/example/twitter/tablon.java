@@ -99,7 +99,7 @@ public class tablon extends AppCompatActivity {
 
             @Override
             public void fallo(int codigo) {
-                Toast.makeText(tablon.this, "Enviado", Toast.LENGTH_LONG).show();
+                Toast.makeText(tablon.this, "ERROR", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -108,7 +108,7 @@ public class tablon extends AppCompatActivity {
     } // pulsado ()
 
     public void btncuenta(View view) {
-        Intent myIntent = new Intent(this, miCuenta.class);
+        Intent myIntent = new Intent(tablon.this, miCuenta.class);
         myIntent.putExtra("Nick", nickLogin);
         this.startActivity(myIntent);
     }

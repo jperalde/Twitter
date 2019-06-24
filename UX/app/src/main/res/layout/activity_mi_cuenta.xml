@@ -21,6 +21,15 @@
         android:onClick="btnVolver"
         android:text="Volver" />
     <Button
+        android:id="@+id/buscarUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="200dp"
+
+        android:layout_marginTop="0dp"
+        android:onClick="btnBuscar"
+        android:text="buscar" />
+    <Button
         android:id="@+id/cuenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +39,13 @@
         android:onClick="btnBaja"
         android:text="Dar de Baja" />
 
-
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cargar tweets"
+        android:onClick="btncargar"
+        />
 
 
 </RelativeLayout>
