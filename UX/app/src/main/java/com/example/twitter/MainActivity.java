@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private Button elBotonEnviar;
     private ArrayAdapter list_adapter;
 
-    public final static LogicaFake laLogicaFake = new LogicaFake("http://192.168.1.23:8080" );
+    public final static LogicaFake laLogicaFake = new LogicaFake("http://10.236.21.86:8080" );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

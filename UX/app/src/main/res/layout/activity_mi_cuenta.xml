@@ -38,6 +38,15 @@
         android:layout_marginTop="60dp"
         android:onClick="btnBaja"
         android:text="Dar de Baja" />
+    <Button
+        android:id="@+id/cambiarpass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+
+        android:layout_marginTop="120dp"
+        android:onClick="btnCambio"
+        android:text="Cambiar Contraseña" />
 
     <Button
         android:id="@+id/button"

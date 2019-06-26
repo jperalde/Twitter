@@ -97,6 +97,7 @@ public class buscarUsuario extends AppCompatActivity {
             @Override
             public void fallo(int codigo) {
 
+
             }
         });
 

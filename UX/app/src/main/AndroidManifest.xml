@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".buscarUsuario"></activity>
+        <activity android:name=".cambiarContra"></activity>
+        <activity android:name=".buscarUsuario" />
         <activity android:name=".baja" />
         <activity android:name=".miCuenta" />
         <activity android:name=".tablon" />

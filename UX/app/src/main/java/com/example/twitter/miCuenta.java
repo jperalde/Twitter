@@ -121,4 +121,10 @@ public class miCuenta extends AppCompatActivity {
         myIntent.putExtra("Nick", nickLogin);
         this.startActivity(myIntent);
     }
+
+    public void btnCambio(View view) {
+        Intent myIntent = new Intent(this, cambiarContra.class);
+        myIntent.putExtra("Nick", nickLogin);
+        this.startActivity(myIntent);
+    }
 }
